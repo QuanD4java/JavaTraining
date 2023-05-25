@@ -3,16 +3,16 @@ package com.example.importandexportcsv.service;
 import com.example.importandexportcsv.entity.Model;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 public class CSVService {
@@ -22,7 +22,7 @@ public class CSVService {
         return file.getContentType().equals(CSV_FORMAT);
     }
 
-    public static List<Model> listModel(InputStream is) {
+    public static List<Model> readCSV(InputStream is) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
             CSVParser csvParser = new CSVParser(reader,
                     CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
@@ -49,6 +49,23 @@ public class CSVService {
             }
             return list;
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void writeCSV(Stream<Model> data) {
+        try(BufferedWriter writer = Files.newBufferedWriter(Paths.get("./file.csv"))){
+            CSVPrinter printer=new CSVPrinter(writer,CSVFormat.DEFAULT
+                    .withHeader("Series_reference,Period,Data_value,Suppressed,STATUS,UNITS,Magnitude,Subject,Group,Series_title_1,Series_title_2,Series_title_3,Series_title_4,Series_title_5"));
+            data.forEach(model -> {
+                try {
+                    printer.print(model);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            printer.flush();
+        }catch (Exception e){
             throw new RuntimeException(e);
         }
     }

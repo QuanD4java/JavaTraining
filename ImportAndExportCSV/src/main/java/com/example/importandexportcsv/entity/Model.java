@@ -1,12 +1,14 @@
 package com.example.importandexportcsv.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import javax.swing.*;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Model {
     public Model(String series_reference, String period, Double data_value, String suppressed, String STATUS, String UNITS, Double magnitude, String subject, String group, String series_title_1, String series_title_2, String series_title_3, String series_title_4, String series_title_5) {
         Series_reference = series_reference;
