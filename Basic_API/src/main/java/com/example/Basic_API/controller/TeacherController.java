@@ -22,23 +22,22 @@ public class TeacherController {
     @GetMapping()
     public ResponseEntity<?> getAllTeachers() {
 
-            List<TeacherResponseDTO> data = teacherService.findAll();
-            return ResponseEntity.ok(
-                    new ResponseObjects("ok", "lay du lieu thanh cong", Collections.singleton(data))
-            );
-
+        List<TeacherResponseDTO> data = teacherService.findAll();
+        return ResponseEntity.ok(
+                new ResponseObjects("ok", "lay du lieu thanh cong", Collections.singleton(data))
+        );
 
 
     }
 
     @PostMapping()
-    public ResponseEntity<?>addTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO){
+    public ResponseEntity<?> addTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO) {
         try {
             teacherService.save(teacherRequestDTO);
             return ResponseEntity.ok(
                     new ResponseObject("ok", "them du lieu thanh cong", "")
             );
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.ok(
                     new ResponseObject("failed", e.getMessage(), "")
             );

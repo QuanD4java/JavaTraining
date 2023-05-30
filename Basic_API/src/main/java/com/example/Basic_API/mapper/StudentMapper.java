@@ -10,17 +10,17 @@ import org.mapstruct.factory.Mappers;
 public interface StudentMapper {
     StudentMapper STUDENT_MAPPER = Mappers.getMapper(StudentMapper.class);
 
-    Student studentDTOToStudent (StudentRequestDTO studentDTO);
+    Student studentDTOToStudent(StudentRequestDTO studentDTO);
 
     StudentResponseDTO studentToStudentDTO(Student student);
 
-    default StudentResponseDTO getStudentDto(Student student){
+    default StudentResponseDTO getStudentDto(Student student) {
         StudentResponseDTO studentResponseDTO = studentToStudentDTO(student);
-        String hocluc="";
-        if(student.getDiem()>7)hocluc="gioi";
-        else if(student.getDiem()>5)hocluc="kha";
-        else if(student.getDiem()<0)hocluc="chua nhap diem";
-        else hocluc="yeu";
+        String hocluc = "";
+        if (student.getDiem() > 7) hocluc = "gioi";
+        else if (student.getDiem() > 5) hocluc = "kha";
+        else if (student.getDiem() < 0) hocluc = "chua nhap diem";
+        else hocluc = "yeu";
         studentResponseDTO.setHocLuc(hocluc);
         return studentResponseDTO;
     }

@@ -23,7 +23,7 @@ public class RestTemplateService {
 
     public void writeDataWebClient(String url) throws IOException {
         BufferedWriter writer= Files.newBufferedWriter(Paths.get("webclient.csv"));
-        Flux<org.springframework.core.io.buffer.DataBuffer> data=webClient.get()
+        Flux<DataBuffer> data=webClient.get()
                 .uri(url)
                 .retrieve()
                 .bodyToFlux(DataBuffer.class);

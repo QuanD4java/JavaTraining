@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.stream.Stream;
 
 @Repository
-public interface ModelRepository extends JpaRepository<Model,String> {
+public interface ModelRepository extends JpaRepository<Model, String> {
 
     @Query("select m from Model m")
     public Stream<Model> streamData();

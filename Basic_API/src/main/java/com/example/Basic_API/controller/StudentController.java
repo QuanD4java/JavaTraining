@@ -37,7 +37,7 @@ public class StudentController {
     @PostMapping()
     public ResponseEntity<?> addStudent(@RequestBody StudentRequestDTO studentDTO) {
         try {
-            System.out.println("sds " +new StudentRequestDTO().getDiem() + " "+studentDTO.getDiem());
+            System.out.println("sds " + new StudentRequestDTO().getDiem() + " " + studentDTO.getDiem());
             studentService.save(studentDTO);
             return ResponseEntity.ok(
                     new ResponseObject("ok", "them thanh cong", "")

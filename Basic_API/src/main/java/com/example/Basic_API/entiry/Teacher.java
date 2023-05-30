@@ -20,10 +20,10 @@ public class Teacher {
     private String name;
     private Date birthday;
 
-    public int getAge(){
-        LocalDate birthday=this.birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate now=LocalDate.now();
-        return Period.between(birthday,now).getYears();
+    public int getAge() {
+        LocalDate birthday = this.birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate now = LocalDate.now();
+        return Period.between(birthday, now).getYears();
     }
 
 

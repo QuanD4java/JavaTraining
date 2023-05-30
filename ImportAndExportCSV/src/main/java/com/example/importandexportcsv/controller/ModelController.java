@@ -17,18 +17,18 @@ public class ModelController {
     private final ModelService modelService;
 
     @PostMapping
-    public void file(@RequestBody MultipartFile file){
+    public void file(@RequestBody MultipartFile file) {
         modelService.saveFromCSV(file);
     }
 
     @GetMapping("/{page}")
-    public ResponseEntity<?> getData(@PathVariable String page){
-        List<Model>data=modelService.readFromDB(Integer.parseInt(page));
+    public ResponseEntity<?> getData(@PathVariable String page) {
+        List<Model> data = modelService.readFromDB(Integer.parseInt(page));
         return ResponseEntity.status(HttpStatus.OK).body(data);
     }
 
     @PostMapping("/print")
-    public void printCSV(){
+    public void printCSV() {
         modelService.printCSV();
     }
 }

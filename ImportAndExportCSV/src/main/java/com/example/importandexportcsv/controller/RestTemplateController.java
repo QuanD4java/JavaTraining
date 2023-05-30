@@ -12,6 +12,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class RestTemplateController {
     private final RestTemplateService restTemplateService;
+
     @PostMapping("/webclient")
     public void writeDataFromApi(@RequestParam String url) throws IOException {
         restTemplateService.writeDataWebClient(url);
@@ -21,8 +22,9 @@ public class RestTemplateController {
     public void writeDataFromApi1(@RequestParam String url) throws IOException {
         restTemplateService.writeAllData(url);
     }
+
     @GetMapping
-    public ResponseEntity<?> getData(@RequestParam String url){
-       return restTemplateService.getData(url);
+    public ResponseEntity<?> getData(@RequestParam String url) {
+        return restTemplateService.getData(url);
     }
 }
