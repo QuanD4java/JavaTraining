@@ -1,4 +1,4 @@
-package com.example.springevent.config;
+package com.example.springevent.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -7,23 +7,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 
 @Service
 public class SecurityFilterService {
     private final String signInKey = "7A25432A462D4A614E645266556A586E3272357538782F413F4428472B4B6250";
+    private final long ACCESS_TOKEN_TIME=15*60*1000;
+    private final long REFRESH_TOKEN_TIME=3*60*60*1000;
 
     private SecretKey getKey() {
         byte[] key = Base64.getDecoder().decode(signInKey);
         return Keys.hmacShaKeyFor(key);
     }
 
-    private Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
@@ -39,18 +38,30 @@ public class SecurityFilterService {
         return extractClaims(token, Claims::getSubject);
     }
 
-    public String generateToken(HashMap<String, Objects> claims, UserDetails user) {
+    public HashMap<String,Object> ClaimsToHashMap(Claims claims){
+        HashMap<String,Object> map=new HashMap<>();
+        for(Map.Entry<String,Object> entry : claims.entrySet()){
+            map.put(entry.getKey(),entry.getValue());
+        }
+        return map;
+    }
+
+    public String generateToken(HashMap<String, Object> claims, UserDetails user, long time) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*60))
+                .setExpiration(new Date(System.currentTimeMillis() + time))
                 .signWith(getKey())
                 .compact();
     }
 
     public String generateToken(UserDetails user) {
-        return generateToken(new HashMap<>(), user);
+        return generateToken(new HashMap<>(), user, ACCESS_TOKEN_TIME);
+    }
+
+    public String generateRefreshToken(UserDetails user){
+        return generateToken(new HashMap<>(), user, REFRESH_TOKEN_TIME);
     }
 
     public boolean isUserValid(String token, UserDetails user) {

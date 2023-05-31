@@ -19,6 +19,8 @@ public class User implements UserDetails {
     private String password;
     private String email;
     private String role;
+    private String token;
+    private String refreshToken;
 
     public User(UserBuilder builder) {
         this.username = builder.username;

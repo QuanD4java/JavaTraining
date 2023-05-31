@@ -1,5 +1,8 @@
-package com.example.springevent.config;
+package com.example.springevent.security;
 
+import com.example.springevent.exception.ExpiredTokenException;
+import com.example.springevent.security.service.SecurityFilterService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +27,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String header = request.getHeader("authorization");
+        System.out.println("filter chay");
+        final String header = request.getHeader("access");
         if (header == null || !header.startsWith("Bearer")) {
             filterChain.doFilter(request, response);
             return;
@@ -40,6 +44,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }

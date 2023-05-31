@@ -1,6 +1,6 @@
 package com.example.springevent.service;
 
-import com.example.springevent.config.SecurityFilterService;
+import com.example.springevent.security.service.SecurityFilterService;
 import com.example.springevent.entity.User;
 import com.example.springevent.payload.LoginRequest;
 import com.example.springevent.payload.LoginResponse;
@@ -26,6 +26,10 @@ public class AuthenticationService {
         );
         User user = userRepository.findById(req.getUsername()).orElse(null);
         String token = securityFilterService.generateToken(user);
-        return new LoginResponse(token, user.getRole());
+        String refreshToken = securityFilterService.generateRefreshToken(user);
+        user.setToken(token);
+        user.setRefreshToken(refreshToken);
+        userRepository.save(user);
+        return new LoginResponse(token, refreshToken, user.getRole());
     }
 }

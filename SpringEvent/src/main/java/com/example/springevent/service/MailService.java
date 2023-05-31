@@ -39,7 +39,7 @@ public class MailService {
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
             Transport.send(message);
         } catch (Exception e) {
-            throw new RuntimeException("failed")
+            throw new RuntimeException("failed");
         }
 
     }

@@ -1,4 +1,4 @@
-package com.example.springevent.config;
+package com.example.springevent.security;
 
 import com.example.springevent.repository.UserRepository;
 import lombok.AllArgsConstructor;

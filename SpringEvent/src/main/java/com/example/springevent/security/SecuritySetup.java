@@ -1,4 +1,4 @@
-package com.example.springevent.config;
+package com.example.springevent.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,12 +18,15 @@ public class SecuritySetup {
 
     private final AuthenticationProvider authenticationProvider;
     private final SecurityFilter securityFilter;
+    private final CustomEntryPoint entryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(Customizer.withDefaults())
                 .csrf((csrf) -> csrf.disable())
+                .exceptionHandling((handling) ->
+                        handling.authenticationEntryPoint(entryPoint))
                 .authorizeHttpRequests(
                         (authorizeHttpRequests) ->
                                 authorizeHttpRequests
